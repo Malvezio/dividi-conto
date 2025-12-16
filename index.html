@@ -156,22 +156,35 @@
     @media (max-width: 600px){
       .table{min-width: 100%; border-spacing: 0 12px;}
       .thead{display:none;}
+
       .trow{
         display:grid;
-        grid-template-columns: 72px 1fr 90px 90px 56px;
-        gap: 10px;
+        grid-template-columns:
+          56px        /* toggle */
+          2fr         /* famiglia ≈ 50% */
+          1fr         /* adulti */
+          1fr         /* bimbi */
+          44px;       /* cestino */
+        gap: 8px;
         padding: 10px;
         border-radius: 18px;
+        align-items: center;
       }
+
       .trow td{padding:0 !important;}
-      .trow td:nth-child(2) input[type="text"]{
-        min-width: 180px; /* campo Famiglia più largo e leggibile */
+
+      /* Famiglia: leggibile ma non enorme */
+      .trow td:nth-child(2) input{
         font-weight: 700;
+        font-size: 15px;
       }
+
+      /* Numeri più compatti e centrati */
       .trow td:nth-child(3) input,
       .trow td:nth-child(4) input{
-        text-align:center;
+        text-align: center;
         font-weight: 700;
+        padding: 10px 6px;
       }
     }
 

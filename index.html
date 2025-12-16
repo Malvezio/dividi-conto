@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cena Split</title>
+
   <style>
     :root{
       --bg: #f4f6fb;
@@ -18,6 +19,7 @@
       --radius2: 22px;
       --focus: 0 0 0 4px rgba(37,99,235,.18);
     }
+
     [data-theme="dark"]{
       --bg: #0b1220;
       --card: #0f1b31;
@@ -29,15 +31,18 @@
       --shadow: 0 14px 40px rgba(0,0,0,.35);
       --focus: 0 0 0 4px rgba(59,130,246,.22);
     }
+
     html,body{height:100%;}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 10% -10%, rgba(37,99,235,.12), transparent 55%),
-                  radial-gradient(900px 500px at 95% 10%, rgba(99,102,241,.10), transparent 50%),
-                  var(--bg);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(37,99,235,.12), transparent 55%),
+        radial-gradient(900px 500px at 95% 10%, rgba(99,102,241,.10), transparent 50%),
+        var(--bg);
       color: var(--text);
     }
+
     .wrap{max-width: 980px; margin: 0 auto; padding: 16px 14px 60px;}
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
@@ -46,9 +51,7 @@
       backdrop-filter: blur(10px);
       background: linear-gradient(to bottom, color-mix(in srgb, var(--bg) 92%, transparent), transparent);
     }
-    .title{
-      display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
-    }
+    .title{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
     .title h1{font-size: 20px; margin:0; letter-spacing:.2px;}
     .pill{
       font-size:12px; color: var(--muted);
@@ -56,6 +59,7 @@
       border-radius: 999px; background: color-mix(in srgb, var(--card) 75%, transparent);
       white-space: nowrap;
     }
+
     .themeCtl{display:flex; gap:8px; align-items:center;}
     .btn{
       border: 1px solid var(--border);
@@ -81,6 +85,7 @@
       background: color-mix(in srgb, #ef4444 12%, var(--card));
       color: color-mix(in srgb, #ef4444 80%, var(--text));
     }
+
     .grid{
       display:grid;
       grid-template-columns: 1.1fr .9fr;
@@ -91,6 +96,7 @@
       .grid{grid-template-columns:1fr;}
       .topbar{position: static; backdrop-filter:none; background: transparent;}
     }
+
     .card{
       background: color-mix(in srgb, var(--card) 92%, transparent);
       border: 1px solid var(--border);
@@ -100,9 +106,11 @@
     }
     .card h2{margin:0 0 6px; font-size:18px;}
     .sub{color: var(--muted); font-size: 13px; margin:0 0 12px;}
+
     .row{display:flex; gap: 12px; flex-wrap:wrap; align-items:flex-end;}
     .field{flex:1; min-width: 160px;}
     .field label{display:block; font-size: 12px; color: var(--muted); margin-bottom:6px;}
+
     input[type="text"], input[type="number"], select{
       width:100%;
       box-sizing:border-box;
@@ -114,12 +122,20 @@
       font-size: 14px;
     }
     input[type="number"]{appearance: textfield;}
-    input:focus, select:focus{outline:none; box-shadow: var(--focus); border-color: color-mix(in srgb, var(--primary) 55%, var(--border));}
+    input:focus, select:focus{
+      outline:none;
+      box-shadow: var(--focus);
+      border-color: color-mix(in srgb, var(--primary) 55%, var(--border));
+    }
+
+    /* Tabella + fix mobile-friendly */
+    .tableWrap{overflow-x:auto; -webkit-overflow-scrolling: touch;}
     .table{
       width:100%;
       border-collapse: separate;
       border-spacing: 0 10px;
       margin-top: 10px;
+      min-width: 620px; /* evita schiacciamenti estremi */
     }
     .thead{
       font-size: 12px;
@@ -132,12 +148,33 @@
       border: 1px solid var(--border);
       border-radius: 14px;
     }
-    .trow td{
-      padding: 10px;
-      vertical-align: middle;
-    }
+    .trow td{padding: 10px; vertical-align: middle;}
     .trow td:first-child{padding-left: 12px; width:70px;}
     .trow td:last-child{padding-right: 12px;}
+
+    /* >>> FIX: su mobile il campo Famiglia non si schiaccia più */
+    @media (max-width: 600px){
+      .table{min-width: 100%; border-spacing: 0 12px;}
+      .thead{display:none;}
+      .trow{
+        display:grid;
+        grid-template-columns: 72px 1fr 90px 90px 56px;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 18px;
+      }
+      .trow td{padding:0 !important;}
+      .trow td:nth-child(2) input[type="text"]{
+        min-width: 180px; /* campo Famiglia più largo e leggibile */
+        font-weight: 700;
+      }
+      .trow td:nth-child(3) input,
+      .trow td:nth-child(4) input{
+        text-align:center;
+        font-weight: 700;
+      }
+    }
+
     .toggle{
       width: 40px; height: 24px;
       border-radius: 999px;
@@ -155,6 +192,7 @@
       transition: transform .2s ease;
     }
     .toggle.on .knob{transform: translateX(16px);}
+
     .iconBtn{
       width: 44px; height: 40px;
       border-radius: 12px;
@@ -164,17 +202,19 @@
       cursor:pointer;
     }
     .iconBtn:focus{outline:none; box-shadow: var(--focus);}
+
     .muted{color: var(--muted);}
     .small{font-size:12px;}
+    .divider{height:1px; background: var(--border); margin: 12px 0;}
+
     .kpiGrid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 10px;
       margin-top: 10px;
     }
-    @media (max-width: 520px){
-      .kpiGrid{grid-template-columns:1fr;}
-    }
+    @media (max-width: 520px){ .kpiGrid{grid-template-columns:1fr;} }
+
     .kpi{
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -182,15 +222,22 @@
       background: color-mix(in srgb, var(--card) 94%, transparent);
     }
     .kpi .label{font-size:12px; color: var(--muted);}
-    .kpi .value{font-size: 18px; font-weight: 700; margin-top: 4px;}
-    .divider{height:1px; background: var(--border); margin: 12px 0;}
+    .kpi .value{font-size: 18px; font-weight: 800; margin-top: 4px;}
+
     .actions{
       display:flex; gap: 10px; flex-wrap:wrap;
     }
-    .actions .btn{flex: 1; justify-content:center; min-width: 160px; padding: 14px 14px; border-radius: 16px; font-size: 16px;}
+    .actions .btn{
+      flex: 1; justify-content:center;
+      min-width: 160px;
+      padding: 14px 14px;
+      border-radius: 16px;
+      font-size: 16px;
+    }
     @media (max-width: 520px){
       .actions .btn{min-width: 100%;}
     }
+
     .notice{
       padding: 10px 12px;
       border-radius: 14px;
@@ -199,15 +246,16 @@
       background: color-mix(in srgb, var(--card) 90%, transparent);
       font-size: 13px;
     }
+
+    /* Quote per famiglia nel riepilogo (grandi) */
     .familyCards{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
       margin-top: 12px;
     }
-    @media (max-width: 520px){
-      .familyCards{grid-template-columns:1fr;}
-    }
+    @media (max-width: 520px){ .familyCards{grid-template-columns:1fr;} }
+
     .famCard{
       border: 1px solid var(--border);
       border-radius: var(--radius2);
@@ -215,15 +263,23 @@
       padding: 12px;
       overflow:hidden;
     }
-    .famCard .name{font-weight: 900; font-size: 16px;}
+    .famCard .name{font-weight: 900; font-size: 15px;}
     .famCard .meta{color: var(--muted); font-size: 12px; margin-top:4px;}
-    .famCard .amount{font-weight: 1000; font-size: 40px; margin-top: 8px; letter-spacing: .3px;}
+    .famCard .amount{
+      font-weight: 950;
+      font-size: 36px; /* più grande = visibile subito */
+      margin-top: 8px;
+      letter-spacing: .2px;
+    }
+    @media (max-width: 520px){
+      .famCard .amount{font-size: 40px;}
+    }
+
     .rightHeader{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .savedList{
-      display:flex; flex-direction:column; gap:10px; margin-top:10px;
-    }
+
+    .savedList{display:flex; flex-direction:column; gap:10px; margin-top:10px;}
     .savedItem{
       border: 1px solid var(--border);
       border-radius: var(--radius2);
@@ -232,9 +288,10 @@
       display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
     .savedItem .main{display:flex; flex-direction:column; gap:4px;}
-    .savedItem .main .t{font-weight:800;}
+    .savedItem .main .t{font-weight:900;}
     .savedItem .main .d{font-size:12px; color: var(--muted);}
     .savedItem .tools{display:flex; gap:8px; align-items:center;}
+
     .toast{
       position: fixed;
       left: 50%;
@@ -254,6 +311,7 @@
     .toast.show{opacity: 1; transform: translateX(-50%) translateY(-6px);}
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header class="topbar">
@@ -292,18 +350,20 @@
           </div>
         </div>
 
-        <table class="table" aria-label="Famiglie della cena">
-          <thead class="thead">
-            <tr>
-              <th style="text-align:left; padding-left:12px;">Usa</th>
-              <th style="text-align:left;">Famiglia</th>
-              <th style="text-align:left;">Adulti</th>
-              <th style="text-align:left;">Bimbi</th>
-              <th style="text-align:left;">&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody id="dinnerRows"></tbody>
-        </table>
+        <div class="tableWrap">
+          <table class="table" aria-label="Famiglie della cena">
+            <thead class="thead">
+              <tr>
+                <th style="text-align:left; padding-left:12px;">Usa</th>
+                <th style="text-align:left;">Famiglia</th>
+                <th style="text-align:left;">Adulti</th>
+                <th style="text-align:left;">Bimbi</th>
+                <th style="text-align:left;">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody id="dinnerRows"></tbody>
+          </table>
+        </div>
 
         <div class="row" style="justify-content:space-between; align-items:center; margin-top: 6px;">
           <button class="btn" id="addRowBtn">+ Aggiungi famiglia</button>
@@ -357,6 +417,7 @@
             </div>
           </div>
 
+          <!-- Quote grandi QUI (nel riepilogo) -->
           <div class="familyCards" id="familyCards" aria-label="Quote per famiglia"></div>
 
           <div class="divider"></div>
@@ -447,6 +508,7 @@
   // ---------- State ----------
   const uid = () => Math.random().toString(16).slice(2) + Date.now().toString(16);
 
+  /** @type {{id:string, name:string, adults:number, kids:number, use:boolean}[]} */
   let dinnerFamilies = [
     { id: uid(), name: "Famiglia 1", adults: 2, kids: 0, use: true },
   ];
@@ -496,6 +558,7 @@
       const tr = document.createElement("tr");
       tr.className = "trow";
 
+      // Usa toggle
       const tdUse = document.createElement("td");
       const toggle = document.createElement("div");
       toggle.className = "toggle" + (f.use ? " on" : "");
@@ -512,6 +575,7 @@
       });
       tdUse.appendChild(toggle);
 
+      // Nome
       const tdName = document.createElement("td");
       const inpName = document.createElement("input");
       inpName.type = "text";
@@ -523,6 +587,7 @@
       });
       tdName.appendChild(inpName);
 
+      // Adulti
       const tdA = document.createElement("td");
       const inpA = document.createElement("input");
       inpA.type = "number";
@@ -536,6 +601,7 @@
       });
       tdA.appendChild(inpA);
 
+      // Bimbi
       const tdK = document.createElement("td");
       const inpK = document.createElement("input");
       inpK.type = "number";
@@ -549,11 +615,12 @@
       });
       tdK.appendChild(inpK);
 
+      // Delete
       const tdDel = document.createElement("td");
       const del = document.createElement("button");
       del.className = "iconBtn";
       del.title = "Rimuovi";
-      del.textContent = "🗑️";
+      del.innerHTML = "🗑️";
       del.addEventListener("click", () => {
         dinnerFamilies = dinnerFamilies.filter(x => x.id !== f.id);
         if (dinnerFamilies.length === 0) {
@@ -610,7 +677,7 @@
 
       const delBtn = document.createElement("button");
       delBtn.className = "iconBtn";
-      delBtn.textContent = "🗑️";
+      delBtn.innerHTML = "🗑️";
       delBtn.title = "Elimina dalla lista salvata";
       delBtn.addEventListener("click", () => {
         const next = loadSaved().filter(x => x.id !== sf.id);
@@ -704,7 +771,7 @@
       const val = (step === "none") ? x.raw : x.rounded;
       lines.push(`• ${x.name}: ${euro(val)} € (${x.units.toLocaleString("it-IT",{maximumFractionDigits:2})} unità)`);
     });
-    const text = lines.join("\\n");
+    const text = lines.join("\n");
 
     shareBtn.disabled = !(total > 0 && selected.length);
     copyBtn.disabled = !(total > 0 && selected.length);
@@ -723,6 +790,7 @@
     const selected = dinnerFamilies.filter(f => !!f.use);
     if (!selected.length) return toast("Seleziona almeno una famiglia");
     const saved = loadSaved();
+
     selected.forEach(f => {
       const name = (f.name || "Famiglia").trim() || "Famiglia";
       const existing = saved.find(x => (x.name || "").trim().toLowerCase() === name.toLowerCase());
@@ -733,6 +801,7 @@
         saved.push({ id: uid(), name, adults: f.adults || 0, kids: f.kids || 0 });
       }
     });
+
     storeSaved(saved);
     renderSaved();
     toast("Salvate");

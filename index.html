@@ -1,548 +1,203 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Cena Split</title>
   <style>
     :root{
-      --bg:#f6f7fb; --card:#ffffff; --text:#111827; --muted:#6b7280;
-      --border:#e5e7eb; --shadow: 0 6px 20px rgba(0,0,0,.08);
-      --btn:#111827; --btnText:#ffffff;
-      --inputBg:#ffffff;
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --primary:#2563eb;
+      --primary-weak:#dbeafe;
+      --ok:#16a34a;
+      --danger:#ef4444;
+      --shadow: 0 6px 18px rgba(15,23,42,.08);
+      --radius: 16px;
+      --pad: 16px;
+      --gap: 12px;
+      --input:#ffffff;
+      --inputText:#0f172a;
     }
-    [data-theme="dark"]{
-      --bg:#0b1220; --card:#0f172a; --text:#e5e7eb; --muted:#94a3b8;
-      --border:#1f2937; --shadow: 0 10px 28px rgba(0,0,0,.35);
-      --btn:#e5e7eb; --btnText:#0b1220;
-      --inputBg:#0b1220;
+    html[data-theme="dark"]{
+      --bg:#0b1220;
+      --card:#0f172a;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --border:#23314b;
+      --primary:#60a5fa;
+      --primary-weak:#0b2a57;
+      --ok:#22c55e;
+      --danger:#fb7185;
+      --shadow: 0 8px 24px rgba(0,0,0,.35);
+      --input:#0b1220;
+      --inputText:#e5e7eb;
     }
+
     *{box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);color:var(--text)}
-    .wrap{max-width:980px;margin:24px auto;padding:16px}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-    .title{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-    h1{margin:0;font-size:22px}
-    .muted{color:var(--muted);font-size:13px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
-    label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
-    input, select{
-      padding:10px 12px;border:1px solid var(--border);border-radius:12px;
-      font-size:14px;background:var(--inputBg);color:var(--text);min-width:140px
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      padding: 18px;
     }
-    input[type="number"]{min-width:110px}
-    .btn{
-      border:0;border-radius:12px;padding:10px 12px;font-size:14px;cursor:pointer;
-      background:var(--btn);color:var(--btnText)
+
+    .container{max-width: 980px; margin: 0 auto;}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap: 12px;
+      margin-bottom: 14px;
     }
-    .btn.secondary{background:transparent;color:var(--text);border:1px solid var(--border)}
-    .btn.danger{background:#b91c1c;color:#fff}
-    .grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
-    @media (max-width:900px){.grid2{grid-template-columns:1fr}}
-    table{width:100%;border-collapse:separate;border-spacing:0 10px}
-    th{font-size:12px;color:var(--muted);text-align:left;padding:0 10px}
-    td{background:rgba(127,127,127,.06);padding:10px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-    tr td:first-child{border-left:1px solid var(--border);border-top-left-radius:12px;border-bottom-left-radius:12px}
-    tr td:last-child{border-right:1px solid var(--border);border-top-right-radius:12px;border-bottom-right-radius:12px}
-    .chip{font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted)}
-    .right{margin-left:auto}
-    .flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .small{font-size:12px;color:var(--muted)}
-    .sumBox{display:flex;flex-direction:column;gap:10px}
-    .big{font-size:18px;font-weight:700}
-    .ok{color:#16a34a}
-    .warn{color:#f59e0b}
-    .err{color:#ef4444}
-    .sp{height:8px}
+    .brand{
+      display:flex; align-items:center; gap: 10px;
+      font-weight:800; font-size: 22px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius:999px;
+      padding: 8px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space:nowrap;
+    }
+    .toggle{
+      display:flex; align-items:center; gap:8px;
+      border:1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius:999px;
+      padding: 8px 10px;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+      font-size: 13px;
+    }
+    .toggle .dot{
+      width: 34px; height: 20px; border-radius: 999px;
+      background: var(--border); position: relative;
+      flex: 0 0 auto;
+    }
+    .toggle .dot::after{
+      content:""; position:absolute; top:2px; left:2px;
+      width: 16px; height: 16px; border-radius: 999px;
+      background: var(--card);
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      transition: transform .2s ease;
+    }
+    .toggle[data-on="true"] .dot{
+      background: var(--primary);
+    }
+    .toggle[data-on="true"] .dot::after{
+      transform: translateX(14px);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: var(--pad);
+    }
+    .card h2{
+      margin: 0 0 6px 0;
+      font-size: 20px;
+      letter-spacing: -0.2px;
+    }
+    .sub{
+      margin: 0 0 12px 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .controls{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    label{
+      display:block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="number"], select{
+      width:100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--input);
+      color: var(--inputText);
+      padding: 10px 12px;
+      outline:none;
+      font-size: 16px;
+    }
+    input[type="number"]{appearance: textfield;}
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+    .table{
+      width:100%;
+      border-collapse: collapse;
+    }
+    .thead{
+      display:grid;
+      grid-template-columns: 70px 1fr 110px 110px 90px;
+      gap: 10px;
+      padding: 8px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 70px 1fr 110px 110px 90px;
+      gap: 10px;
+      padding: 10px;
+      align-items:center;
+      border-bottom: 1px solid var(--border);
+    }
+    .row:last-child{border-bottom:none}
+
+    .useCell{
+      display:flex; align-items:center; gap:10px; justify-content:flex-start;
+    }
     .check{
-      width:18px;height:18px;cursor:pointer;
-      accent-color: #22c55e;
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display:grid; place-items:center;
+      cursor:pointer;
+      background: var(--bg);
     }
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
-  </style>
-</head>
-
-<body>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="title">
-        <h1>Cena Split</h1>
-        <span class="chip">Adulti = 1 • Bimbi = 0,5</span>
-      </div>
-      <div class="flex">
-        <button class="btn secondary" id="toggleTheme">🌙 Dark</button>
-      </div>
-    </div>
-
-    <div class="grid2">
-      <div>
-        <div class="card">
-          <div class="flex" style="justify-content:space-between;">
-            <div>
-              <div class="big">Famiglie della cena</div>
-              <div class="muted">Aggiungi righe e calcola automaticamente quanto paga ogni famiglia.</div>
-            </div>
-            <button class="btn secondary" id="resetCena">Reset cena</button>
-          </div>
-
-          <div class="sp"></div>
-
-          <div class="row">
-            <div>
-              <label>Totale conto (€)</label>
-              <input id="totale" type="number" min="0" step="0.01" placeholder="es. 180" />
-            </div>
-            <div>
-              <label>Arrotondamento</label>
-              <select id="rounding">
-                <option value="0">Nessuno</option>
-                <option value="0.01">Cent</option>
-                <option value="0.05">5 cent</option>
-                <option value="0.1">10 cent</option>
-                <option value="1">1 €</option>
-              </select>
-            </div>
-            <div class="right">
-              <button class="btn" id="addRow">+ Aggiungi famiglia</button>
-            </div>
-          </div>
-
-          <div class="sp"></div>
-
-          <div style="overflow:auto;">
-            <table id="table">
-              <thead>
-                <tr>
-                  <th>Usa</th>
-                  <th>Famiglia</th>
-                  <th>Adulti</th>
-                  <th>Bimbi</th>
-                  <th>Unità</th>
-                  <th>Paga</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="tbody"></tbody>
-            </table>
-          </div>
-
-          <div class="small">Suggerimento: salva le famiglie “fisse” e poi spunta solo quelle presenti a questa cena.</div>
-        </div>
-
-        <div class="card">
-          <div class="flex" style="justify-content:space-between;">
-            <div>
-              <div class="big">Famiglie salvate</div>
-              <div class="muted">Rimangono memorizzate sul tuo dispositivo (localStorage).</div>
-            </div>
-            <div class="flex">
-              <button class="btn secondary" id="saveCurrent">Salva famiglie attuali</button>
-              <button class="btn danger" id="deleteAllSaved">Svuota salvate</button>
-            </div>
-          </div>
-
-          <div class="sp"></div>
-
-          <div id="savedList" class="sumBox"></div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="big">Riepilogo</div>
-          <div class="sp"></div>
-
-          <div class="sumBox">
-            <div class="flex">
-              <div class="muted">Totale unità (adulti + bimbi×0,5)</div>
-              <div class="right mono" id="totUnita">0</div>
-            </div>
-            <div class="flex">
-              <div class="muted">Quota per unità (€)</div>
-              <div class="right mono" id="quotaUnita">0</div>
-            </div>
-            <div class="flex">
-              <div class="muted">Somma quote (€)</div>
-              <div class="right mono" id="sommaQuote">0</div>
-            </div>
-            <div class="flex">
-              <div class="muted">Differenza vs totale (€)</div>
-              <div class="right mono" id="diff">0</div>
-            </div>
-
-            <div class="sp"></div>
-
-            <button class="btn" id="shareWA">Condividi su WhatsApp</button>
-            <button class="btn secondary" id="copyText">Copia testo</button>
-
-            <div class="small" id="status"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="big">Note</div>
-          <div class="muted">
-            - “Usa” = spunta chi partecipa a questa cena.<br/>
-            - Salvataggio e dark mode restano nel browser (nessun account).<br/>
-            - Nessuna PWA: niente installazione, solo web.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<script>
-  // ---------- Storage helpers ----------
-  const LS_KEYS = {
-    theme: "cenasplit_theme",
-    savedFamilies: "cenasplit_saved_families",
-    dinnerRows: "cenasplit_dinner_rows",
-    dinnerTotal: "cenasplit_dinner_total",
-    dinnerRounding: "cenasplit_dinner_rounding",
-  };
-
-  const fmt2 = (n) => (isFinite(n) ? n.toFixed(2) : "0.00");
-  const clampInt = (v) => Math.max(0, parseInt(v || "0", 10) || 0);
-
-  function roundToStep(value, step){
-    step = parseFloat(step);
-    if (!step) return value;
-    return Math.round(value / step) * step;
-  }
-
-  // ---------- Theme ----------
-  const toggleThemeBtn = document.getElementById("toggleTheme");
-  function applyTheme(theme){
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(LS_KEYS.theme, theme);
-    toggleThemeBtn.textContent = theme === "dark" ? "☀️ Light" : "🌙 Dark";
-  }
-  applyTheme(localStorage.getItem(LS_KEYS.theme) || "light");
-  toggleThemeBtn.addEventListener("click", () => {
-    const cur = document.documentElement.getAttribute("data-theme") || "light";
-    applyTheme(cur === "dark" ? "light" : "dark");
-  });
-
-  // ---------- State ----------
-  let rows = [];
-  const tbody = document.getElementById("tbody");
-  const totaleInput = document.getElementById("totale");
-  const roundingSel = document.getElementById("rounding");
-
-  // Restore dinner basic fields
-  totaleInput.value = localStorage.getItem(LS_KEYS.dinnerTotal) || "";
-  roundingSel.value = localStorage.getItem(LS_KEYS.dinnerRounding) || "0";
-
-  totaleInput.addEventListener("input", () => {
-    localStorage.setItem(LS_KEYS.dinnerTotal, totaleInput.value);
-    recalc();
-  });
-  roundingSel.addEventListener("change", () => {
-    localStorage.setItem(LS_KEYS.dinnerRounding, roundingSel.value);
-    recalc();
-  });
-
-  function defaultRow(i){
-    return { id: crypto.randomUUID(), use: true, name: `Famiglia ${i}`, adults: 2, kids: 0 };
-  }
-
-  function loadDinnerRows(){
-    try{
-      const raw = localStorage.getItem(LS_KEYS.dinnerRows);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return null;
-      return parsed.map(r => ({
-        id: r.id || crypto.randomUUID(),
-        use: !!r.use,
-        name: (r.name ?? "").toString(),
-        adults: clampInt(r.adults),
-        kids: clampInt(r.kids),
-      }));
-    }catch(e){ return null; }
-  }
-
-  function saveDinnerRows(){
-    localStorage.setItem(LS_KEYS.dinnerRows, JSON.stringify(rows));
-  }
-
-  function loadSavedFamilies(){
-    try{
-      const raw = localStorage.getItem(LS_KEYS.savedFamilies);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return [];
-      return parsed.map(f => ({
-        id: f.id || crypto.randomUUID(),
-        name: (f.name ?? "").toString(),
-        adults: clampInt(f.adults),
-        kids: clampInt(f.kids),
-      }));
-    }catch(e){ return []; }
-  }
-
-  function saveSavedFamilies(list){
-    localStorage.setItem(LS_KEYS.savedFamilies, JSON.stringify(list));
-  }
-
-  // ---------- UI rendering ----------
-  function render(){
-    tbody.innerHTML = "";
-    rows.forEach((r, idx) => {
-      const tr = document.createElement("tr");
-
-      const unita = r.use ? (r.adults + r.kids * 0.5) : 0;
-
-      tr.innerHTML = `
-        <td><input class="check" type="checkbox" ${r.use ? "checked" : ""} data-k="use" data-id="${r.id}"></td>
-        <td>
-          <input type="text" value="${escapeHtml(r.name)}" data-k="name" data-id="${r.id}" style="min-width:200px">
-        </td>
-        <td><input type="number" min="0" step="1" value="${r.adults}" data-k="adults" data-id="${r.id}"></td>
-        <td><input type="number" min="0" step="1" value="${r.kids}" data-k="kids" data-id="${r.id}"></td>
-        <td class="mono">${unita ? unita.toFixed(1).replace(/\.0$/,"") : "0"}</td>
-        <td class="mono" data-pay="${r.id}">0.00</td>
-        <td><button class="btn secondary" data-del="${r.id}">Rimuovi</button></td>
-      `;
-
-      tbody.appendChild(tr);
-    });
-
-    // listeners
-    tbody.querySelectorAll("input[data-k]").forEach(el => {
-      el.addEventListener("input", (e) => {
-        const id = e.target.getAttribute("data-id");
-        const k  = e.target.getAttribute("data-k");
-        const row = rows.find(x => x.id === id);
-        if (!row) return;
-
-        if (k === "use"){
-          row.use = e.target.checked;
-        } else if (k === "name"){
-          row.name = e.target.value;
-        } else if (k === "adults"){
-          row.adults = clampInt(e.target.value);
-        } else if (k === "kids"){
-          row.kids = clampInt(e.target.value);
-        }
-
-        saveDinnerRows();
-        recalc();
-      });
-    });
-
-    tbody.querySelectorAll("button[data-del]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-del");
-        rows = rows.filter(r => r.id !== id);
-        saveDinnerRows();
-        render();
-        recalc();
-      });
-    });
-  }
-
-  function renderSaved(){
-    const box = document.getElementById("savedList");
-    const saved = loadSavedFamilies();
-
-    if (saved.length === 0){
-      box.innerHTML = `<div class="small">Nessuna famiglia salvata.</div>`;
-      return;
+    .check[data-on="true"]{
+      border-color: rgba(34,197,94,.35);
+      background: rgba(34,197,94,.12);
     }
-
-    box.innerHTML = "";
-    saved.forEach(f => {
-      const row = document.createElement("div");
-      row.className = "flex";
-      row.style.justifyContent = "space-between";
-      row.style.padding = "10px";
-      row.style.border = "1px solid var(--border)";
-      row.style.borderRadius = "12px";
-      row.style.background = "rgba(127,127,127,.06)";
-
-      row.innerHTML = `
-        <div>
-          <div><b>${escapeHtml(f.name)}</b></div>
-          <div class="small mono">Adulti: ${f.adults} • Bimbi: ${f.kids}</div>
-        </div>
-        <div class="flex">
-          <button class="btn secondary" data-addsaved="${f.id}">Aggiungi alla cena</button>
-          <button class="btn danger" data-delsaved="${f.id}">Elimina</button>
-        </div>
-      `;
-      box.appendChild(row);
-    });
-
-    box.querySelectorAll("button[data-addsaved]").forEach(b => {
-      b.addEventListener("click", () => {
-        const id = b.getAttribute("data-addsaved");
-        const saved = loadSavedFamilies();
-        const f = saved.find(x => x.id === id);
-        if (!f) return;
-        rows.push({ id: crypto.randomUUID(), use: true, name: f.name, adults: f.adults, kids: f.kids });
-        saveDinnerRows();
-        render();
-        recalc();
-      });
-    });
-
-    box.querySelectorAll("button[data-delsaved]").forEach(b => {
-      b.addEventListener("click", () => {
-        const id = b.getAttribute("data-delsaved");
-        const saved = loadSavedFamilies().filter(x => x.id !== id);
-        saveSavedFamilies(saved);
-        renderSaved();
-      });
-    });
-  }
-
-  function escapeHtml(str){
-    return (str ?? "").toString()
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  // ---------- Calculation ----------
-  function recalc(){
-    const totale = parseFloat(totaleInput.value || "0") || 0;
-    const rounding = parseFloat(roundingSel.value || "0") || 0;
-
-    const active = rows.filter(r => r.use);
-    const totUnita = active.reduce((s,r)=> s + (r.adults + r.kids*0.5), 0);
-
-    document.getElementById("totUnita").textContent = totUnita.toFixed(1).replace(/\.0$/,"");
-
-    const quota = totUnita > 0 ? (totale / totUnita) : 0;
-    document.getElementById("quotaUnita").textContent = fmt2(quota);
-
-    let somma = 0;
-    rows.forEach(r => {
-      const unita = r.use ? (r.adults + r.kids*0.5) : 0;
-      let pay = unita * quota;
-      pay = roundToStep(pay, rounding);
-      somma += pay;
-
-      const cell = tbody.querySelector(`[data-pay="${r.id}"]`);
-      if (cell) cell.textContent = fmt2(pay);
-    });
-
-    document.getElementById("sommaQuote").textContent = fmt2(somma);
-    const diff = somma - totale;
-    const diffEl = document.getElementById("diff");
-    diffEl.textContent = fmt2(diff);
-
-    diffEl.className = "right mono " + (Math.abs(diff) < 0.01 ? "ok" : (Math.abs(diff) < 1 ? "warn" : "err"));
-
-    const status = document.getElementById("status");
-    if (totale <= 0) status.textContent = "Inserisci il totale del conto.";
-    else if (totUnita <= 0) status.textContent = "Spunta almeno una famiglia (Usa).";
-    else status.textContent = "Pronto: puoi condividere su WhatsApp o copiare il testo.";
-  }
-
-  function buildShareText(){
-    const totale = parseFloat(totaleInput.value || "0") || 0;
-    const rounding = parseFloat(roundingSel.value || "0") || 0;
-
-    const active = rows.filter(r => r.use);
-    const totUnita = active.reduce((s,r)=> s + (r.adults + r.kids*0.5), 0);
-    const quota = totUnita > 0 ? (totale / totUnita) : 0;
-
-    const lines = [];
-    lines.push(`🍽️ Cena Split`);
-    lines.push(`Totale: €${fmt2(totale)}`);
-    lines.push(`Tot unità: ${totUnita.toFixed(1).replace(/\.0$/,"")} (adulti=1, bimbi=0,5)`);
-    if (rounding) lines.push(`Arrotond.: ${roundingSel.options[roundingSel.selectedIndex].text}`);
-    lines.push(`---`);
-    active.forEach(r => {
-      const unita = r.adults + r.kids*0.5;
-      let pay = roundToStep(unita * quota, rounding);
-      lines.push(`${r.name}: €${fmt2(pay)} (A:${r.adults} B:${r.kids})`);
-    });
-    return lines.join("\n");
-  }
-
-  // ---------- Buttons ----------
-  document.getElementById("addRow").addEventListener("click", () => {
-    rows.push(defaultRow(rows.length + 1));
-    saveDinnerRows();
-    render();
-    recalc();
-  });
-
-  document.getElementById("resetCena").addEventListener("click", () => {
-    rows = [defaultRow(1)];
-    totaleInput.value = "";
-    roundingSel.value = "0";
-    localStorage.setItem(LS_KEYS.dinnerTotal, "");
-    localStorage.setItem(LS_KEYS.dinnerRounding, "0");
-    saveDinnerRows();
-    render();
-    recalc();
-  });
-
-  document.getElementById("saveCurrent").addEventListener("click", () => {
-    const currentUnique = new Map();
-    // salva tutte le famiglie presenti (anche non spuntate), dedup per nome+adulti+bimbi
-    rows.forEach(r => {
-      const key = `${(r.name||"").trim().toLowerCase()}|${r.adults}|${r.kids}`;
-      if (!key.startsWith("|")) currentUnique.set(key, { id: crypto.randomUUID(), name: (r.name||"").trim() || "Famiglia", adults: r.adults, kids: r.kids });
-    });
-
-    const saved = loadSavedFamilies();
-    const savedKeys = new Set(saved.map(f => `${(f.name||"").trim().toLowerCase()}|${f.adults}|${f.kids}`));
-    currentUnique.forEach((val, key) => {
-      if (!savedKeys.has(key)) saved.push(val);
-    });
-
-    saveSavedFamilies(saved);
-    renderSaved();
-  });
-
-  document.getElementById("deleteAllSaved").addEventListener("click", () => {
-    if (confirm("Vuoi eliminare TUTTE le famiglie salvate?")) {
-      saveSavedFamilies([]);
-      renderSaved();
+    .check svg{width:18px;height:18px; opacity:.9}
+    .btns{
+      display:flex; gap: 10px; flex-wrap:wrap;
+      margin-top: 12px;
     }
-  });
-
-  document.getElementById("copyText").addEventListener("click", async () => {
-    const text = buildShareText();
-    try{
-      await navigator.clipboard.writeText(text);
-      document.getElementById("status").textContent = "Testo copiato negli appunti ✅";
-    }catch(e){
-      document.getElementById("status").textContent = "Non riesco a copiare automaticamente: seleziona e copia manualmente.";
-      alert(text);
+    button{
+      border:none;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 700;
+      cursor:pointer;
+      font-size: 15px;
     }
-  });
-
-  document.getElementById("shareWA").addEventListener("click", async () => {
-    const text = buildShareText();
-
-    // 1) prova Web Share (telefono)
-    if (navigator.share){
-      try{
-        await navigator.share({ text });
-        return;
-      }catch(e){ /* continua */ }
-    }
-
-    // 2) fallback WhatsApp link (desktop/whatsapp web)
-    const url = "https://wa.me/?text=" + encodeURIComponent(text);
-    window.open(url, "_blank", "noopener,noreferrer");
-  });
-
-  // ---------- Init ----------
-  const restored = loadDinnerRows();
-  rows = (restored && restored.length) ? restored : [defaultRow(1)];
-  render();
-  renderSaved();
-  recalc();
-</script>
-</body>
-</html>
